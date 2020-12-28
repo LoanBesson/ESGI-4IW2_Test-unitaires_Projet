@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\TodolistService;
+use App\Services\EmailService;
 use App\TodolistItem;
 use Illuminate\Http\Request;
 
@@ -52,7 +53,7 @@ class HomeController extends Controller
         else
             return redirect(route('home'))->with('status', 'Ajout impossible');
 
-        return redirect(route('home'));
+        return redirect(route('home'))->with('status',  EmailService::send() ? "Mail envoyé (+18 ans)" : "Mail non envoyé (-18 ans)");
     }
 
     public function delete(TodolistItem $item){
