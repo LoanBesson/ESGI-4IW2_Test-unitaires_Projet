@@ -37,8 +37,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function todolist(){
-        return $this->hasMany('todolist_item');
+    public function todolist()
+    {
+        return $this->hasMany('App\TodolistItem');
+    }
+
+    public function isValid()
+    {
+        return (filter_var($this->email, FILTER_VALIDATE_EMAIL)
+            && isset($this->firstname)
+            && isset($this->lastname)
+            && time() >= strtotime('+13 years', strtotime($this->birthday)));
     }
 
 

@@ -20,3 +20,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/todolist/create', 'HomeController@create')->name('todolist.create');
+Route::post('/todolist/create', 'HomeController@store')->name('todolist.store');
+Route::get('/todolist/delete/{item}', 'HomeController@delete')->name('todolist.delete');

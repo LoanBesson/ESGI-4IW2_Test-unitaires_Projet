@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TodolistService;
+use App\Services\EmailService;
+use App\TodolistItem;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,11 +26,40 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $todolist = TodolistItem::all();
+
+        return view('home', ['todolist' => $todolist]);
     }
 
     public function create()
     {
         return view('todolist.create');
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name'    => 'required|unique:todolist_items',
+            'contentText' => 'required|max:1000',
+        ]);
+
+        $item          = new TodolistItem();
+        $item->name    = $request->name;
+        $item->content = $request->contentText;
+        $item->user_id = \Auth::user()->id;
+
+        if (TodolistService::canAddItem($item))
+            $item->save();
+        else
+            return redirect(route('home'))->with('status', 'Ajout impossible');
+
+        return redirect(route('home'))->with('status',  EmailService::send() ? "Mail envoyé (+18 ans)" : "Mail non envoyé (-18 ans)");
+    }
+
+    public function delete(TodolistItem $item){
+        $item->delete();
+
+        return redirect(route('home'))->with('status', 'Item supprimé');
+    }
+
 }
