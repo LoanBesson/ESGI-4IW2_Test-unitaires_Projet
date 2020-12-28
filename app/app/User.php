@@ -40,4 +40,13 @@ class User extends Authenticatable
     public function todolist(){
         return $this->hasMany('todolist_item');
     }
+
+
+    public function isValid()
+    {
+        return (filter_var($this->email, FILTER_VALIDATE_EMAIL)
+            && isset($this->firstname)
+            && isset($this->lastname)
+            && time() >= strtotime('+13 years', strtotime($this->birthday)));
+    }
 }
