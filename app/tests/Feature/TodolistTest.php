@@ -41,9 +41,9 @@ class TodolistTest extends TestCase
         $this->app['mailer']->setSwiftMailer($mock);
         $mock->shouldReceive('send')->once()
             ->andReturnUsing(function($msg) {
-                $this->assertEquals('My subject', $msg->getSubject());
-                $this->assertEquals('foo@bar.com', $msg->getTo());
-                $this->assertContains('Some string', $msg->getBody());
+                $this->assertEquals('test', $msg->getSubject());
+                $this->assertEquals('test@bar.com', $msg->getTo());
+                $this->assertContains('quelque chose de teste', $msg->getBody());
             });
     }
 }
