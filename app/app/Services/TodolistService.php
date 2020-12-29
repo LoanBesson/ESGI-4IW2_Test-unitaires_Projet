@@ -3,9 +3,7 @@
 namespace App\Services;
 
 use App\TodolistItem;
-use App\Services\TodolistService;
 use App\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TodolistService
