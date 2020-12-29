@@ -7,6 +7,7 @@ use App\TodolistItem;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Mockery;
 use Tests\TestCase;
 
 class TodolistTest extends TestCase
@@ -30,5 +31,19 @@ class TodolistTest extends TestCase
 
 //        Ne fonctionne pas
 //        $this->assertEquals(false, TodolistService::canAddItem($item2), 'Cannot add item');
+    }
+
+
+    public function testmail()
+    {
+
+        $mock = Mockery::mock('Swift_Mailer');
+        $this->app['mailer']->setSwiftMailer($mock);
+        $mock->shouldReceive('send')->once()
+            ->andReturnUsing(function($msg) {
+                $this->assertEquals('My subject', $msg->getSubject());
+                $this->assertEquals('foo@bar.com', $msg->getTo());
+                $this->assertContains('Some string', $msg->getBody());
+            });
     }
 }
