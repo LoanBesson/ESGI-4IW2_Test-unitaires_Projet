@@ -92,4 +92,13 @@ class UserTest extends TestCase
 
         $response->assertSessionHasErrors();
     }
+
+    public function testMock()
+    {
+        $obj = $this->createMock(User::class);
+
+        $obj->expects($this->any())
+            ->method('doSomething')
+            ->will($this->returnValue(42));
+    }
 }
