@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->date('birthday');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->default(\Illuminate\Support\Facades\Hash::make('password'));
             $table->rememberToken();
             $table->timestamps();
         });
